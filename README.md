@@ -100,7 +100,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## **Contact**
 For questions or feedback, please contact:
-- **Your Name**  
+- **Ethan Burress**  
 - **Email**: eburress2@ivytech.edu  
 - **GitHub**: eburress2(https://github.com/eburress2)
 
