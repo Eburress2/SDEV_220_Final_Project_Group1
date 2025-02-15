@@ -1,0 +1,29 @@
+{% extends "inventory/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Inventory</h2>
+    <h3 class="text-danger">Low Stock Alerts</h3>
+    <ul>
+        {% for product in low_stock %}
+        <li>{{ product.name }} ({{ product.quantity }} left)</li>
+        {% endfor %}
+    </ul>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in inventory %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.product.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
