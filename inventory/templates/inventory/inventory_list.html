@@ -1,26 +1,26 @@
 {% extends "inventory/base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5">
     <h2>Inventory</h2>
-    <h3 class="text-danger">Low Stock Alerts</h3>
-    <ul>
-        {% for product in low_stock %}
-        <li>{{ product.name }} ({{ product.quantity }} left)</li>
-        {% endfor %}
-    </ul>
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-bordered">
+        <thead class="table-dark">
             <tr>
-                <th>Product</th>
-                <th>Quantity</th>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Current Quantity</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in inventory %}
-            <tr>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.product.quantity }}</td>
+            {% for product in products %}
+            <tr {% if product in low_stock %}class="table-danger"{% endif %}>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>
+                    <a href="{% url 'update_inventory' product.id %}" class="btn btn-sm btn-info">Update</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

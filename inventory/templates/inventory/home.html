@@ -1,8 +1,40 @@
 {% extends "inventory/base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1>Welcome to the Inventory Management System</h1>
-    <p>Manage your products, track stock levels, and process orders efficiently.</p>
+<div class="container mt-5 text-center">
+    <h1 class="display-4">Welcome to the Inventory Management System</h1>
+    <p class="lead">Manage your products, track stock levels, record sales and purchases, and more.</p>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Products</h5>
+                    <p class="card-text">Browse all products in your inventory.</p>
+                    <a href="{% url 'product_list' %}" class="btn btn-primary">Products</a>
+                </div>
+            </div>
+        </div>
+             
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Sales</h5>
+                    <p class="card-text">Record sales transactions to reduce stock.</p>
+                    <a href="{% url 'sale_list' %}" class="btn btn-warning">Sales</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Purchases</h5>
+                    <p class="card-text">Record purchase transactions to add stock.</p>
+                    <a href="{% url 'purchase_list' %}" class="btn btn-info">Purchases</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

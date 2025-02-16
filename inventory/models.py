@@ -1,75 +1,73 @@
 
-# Create your models here.
 from django.db import models
+from django import forms
+from django.forms import inlineformset_factory
 
 class Product(models.Model):
-    """Setting up the product class. 
-
-    Args:
-        models (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    product_id = models.CharField(max_length=50, unique=True)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField()
 
-    def __str__(self):
-        return f"{self.name} (ID: {self.product_id})"
-    
-
-class Inventory(models.Model):
-    """Setting up the inventory Class
-
-    Args:
-        models (_type_): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-
-    def get_low_stock(self, threshold=5):
-        """This will show low stock items. Defaults to 5, but can be set to another amount
-        if the optional threshold argument is added.
-
-        Args:
-            threshold (int, optional): _description_. Defaults to 5.
-
-        Returns:
-            _type_: _description_
-        """
-        return Product.objects.filter(quantity__lt=threshold)
-
-    def __str__(self):
-        return f"Inventory for {self.product.name}"
-    
-class Order(models.Model):
-    """This Order class handles the settings for selecting the products and order_id
-    and the total_cost of a given order.
-
-    Args:
-        models (_type_): _description_
-    """
-    order_id = models.CharField(max_length=50, unique=True)
-    products = models.ManyToManyField(Product, through='OrderItem')
-    total_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-
-    def calculate_total(self):
-        """This will calculate the total for your orders.
-        """
-        self.total_cost = sum(item.product.price * item.quantity for item in self.orderitem_set.all())
+    def adjust_inventory(self, quantity_change):
+        """Adjust the product's inventory by the specified quantity change."""
+        self.quantity += quantity_change
         self.save()
 
-class OrderItem(models.Model):
-    """This type contains order, product, and quantity.
+    def __str__(self):
+        return f"{self.name}"
+    
+class Purchase(models.Model):
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
-    Args:
-        models (_type_): _description_
-    """
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+
+class PurchaseItem(models.Model):
+    """When purchasing items, the quantity will increase."""
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, default=None)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
+    def save(self, *args, **kwargs):
+        # Increase the product's inventory
+        self.product.quantity += self.quantity
+        self.product.save()
+        super().save(*args, **kwargs)
+
+
+class Sale(models.Model):
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+    def save(self, *args, **kwargs):
+        if not self.total_price:
+            self.total_price = self.calculate_total_price()
+        super().save(*args, **kwargs)
+
+    def calculate_total_price(self):
+        # Implement the logic to calculate total_price
+        # For example, summing related SaleItem prices
+        return sum(item.price for item in self.saleitem_set.all())
+
+    
+class SaleForm(forms.ModelForm):
+    class Meta:
+        model = Sale
+        fields = ['id', 'total_price']
+
+class SaleItem(models.Model):
+    sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def save(self, *args, **kwargs):
+        # Decrease the product's inventory
+        self.product.quantity -= self.quantity
+        self.product.save()
+        super().save(*args, **kwargs)
+
+
+SaleItemFormSet = inlineformset_factory(
+    Sale,
+    SaleItem,
+    fields=['product', 'quantity'],
+    extra=1,  # Number of empty forms to display
+    can_delete=True  # Allow deletion of sale items
+)

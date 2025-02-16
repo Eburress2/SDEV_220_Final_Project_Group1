@@ -15,16 +15,22 @@
     
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">Inventory Management</a>
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <button type="button" class="btn btn-light me-2">Home</button></a>
+            <div class="btn btn-dark me-2" >SDEV 220 Group Project</div>
+            <div>
+                <button type="button" class="btn btn-light me-2" data-bs-theme-value="light">Light</button>
+                <button type="button" class="btn btn-dark me-2" data-bs-theme-value="dark">Dark</button>
+            </div>
         </div>
-        <!-- Navbar/Theme Toggle -->
-        <button type="button" class="btn btn-light me-2" data-bs-theme-value="light">Light</button>
-        <button type="button" class="btn btn-dark" data-bs-theme-value="dark">Dark</button>
     </nav>
     <div class="container mt-4">
         {% block content %}{% endblock %}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="{% static 'inventory/js/scripts.js' %}"></script>
+    <!-- Theme Toggler -->
+    <script src="{% static 'inventory/js/theme-toggler.js' %}"></script>
+    <!-- Order Functionality -->
+<script src="{% static 'inventory/js/order.js' %}"></script>
 </body>
 </html>
