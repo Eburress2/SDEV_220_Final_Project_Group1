@@ -2,33 +2,27 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Products</h2>
-    <a href="{% url 'add_product' %}" class="btn btn-primary mb-3">Add New Product</a>
-    <table class="table table-bordered">
-        <thead class="table-dark">
+    <h1 class="display-4">Product List</h1>
+    <a href="{% url 'inventory:product_create' %}" class="btn btn-primary mb-3">Add New Product</a>
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <th>Product ID</th>
                 <th>Name</th>
                 <th>Price</th>
-                <th>Quantity</th>
+                <th>Category</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for product in products %}
             <tr>
-                <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
-                <td>${{ product.price }}</td>
-                <td>{{ product.quantity }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.category.name }}</td>
                 <td>
-                    <a href="{% url 'edit_product' product.id %}" class="btn btn-sm btn-warning">Edit</a>
-                    <a href="{% url 'delete_product' product.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    <a href="{% url 'inventory:product_update' product.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'inventory:product_delete' product.pk %}" class="btn btn-danger btn-sm">Delete</a>
                 </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5">No products available.</td>
             </tr>
             {% endfor %}
         </tbody>

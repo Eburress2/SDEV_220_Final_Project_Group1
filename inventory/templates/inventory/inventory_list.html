@@ -2,24 +2,26 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Inventory</h2>
-    <table class="table table-bordered">
-        <thead class="table-dark">
+    <h1 class="display-4">Inventory List</h1>
+    <a href="{% url 'inventory:inventory_create' %}" class="btn btn-primary mb-3">Add New Inventory Item</a>
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <th>Product ID</th>
-                <th>Name</th>
-                <th>Current Quantity</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Low Stock Threshold</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for product in products %}
-            <tr {% if product in low_stock %}class="table-danger"{% endif %}>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.quantity }}</td>
+            {% for item in inventory_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.low_stock_threshold }}</td>
                 <td>
-                    <a href="{% url 'update_inventory' product.id %}" class="btn btn-sm btn-info">Update</a>
+                    <a href="{% url 'inventory:inventory_update' item.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'inventory:inventory_delete' item.pk %}" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
             {% endfor %}

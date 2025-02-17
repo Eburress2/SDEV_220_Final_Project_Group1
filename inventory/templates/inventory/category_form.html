@@ -1,0 +1,17 @@
+{% extends "inventory/base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if object %}Edit{% else %}Create{% endif %} Category</title>
+</head>
+<body>
+    <h1>{% if object %}Edit{% else %}Create{% endif %} Category</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'inventory:category_list' %}">Cancel</a>
+</body>
+</html>

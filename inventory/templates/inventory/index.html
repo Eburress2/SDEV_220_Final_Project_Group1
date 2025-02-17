@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Products</h5>
                     <p class="card-text">Browse all products in your inventory.</p>
-                    <a href="{% url 'product_list' %}" class="btn btn-primary">Products</a>
+                    <a href="{% url 'inventory:product_list' %}" class="btn btn-primary">Products</a>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Sales</h5>
                     <p class="card-text">Record sales transactions to reduce stock.</p>
-                    <a href="{% url 'sale_list' %}" class="btn btn-warning">Sales</a>
+                    <a href="#" class="btn btn-warning">Sales</a> <!-- Update this URL when you implement sales view -->
                 </div>
             </div>
         </div>
@@ -31,10 +31,31 @@
                 <div class="card-body">
                     <h5 class="card-title">Purchases</h5>
                     <p class="card-text">Record purchase transactions to add stock.</p>
-                    <a href="{% url 'purchase_list' %}" class="btn btn-info">Purchases</a>
+                    <a href="#" class="btn btn-info">Purchases</a> <!-- Update this URL when you implement purchases view -->
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Latest Products</h5>
+                    <p class="card-text">Recently added products.</p>
+                    {% if latest_product_list %}
+                        <ul>
+                        {% for product in latest_product_list %}
+                            <li><a href="{% url 'inventory:product_detail' product.id %}">{{ product.name }}</a></li> <!-- Update this URL when you implement product detail view -->
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No products are available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>
 {% endblock %}

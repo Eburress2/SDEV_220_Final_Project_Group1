@@ -1,162 +1,94 @@
-from django.shortcuts import redirect, render, get_object_or_404
-from django.db.models import F, ExpressionWrapper, BooleanField
-from .models import Product, Sale, SaleItem, Purchase, PurchaseItem
-from .forms import ProductForm, SaleForm, PurchaseForm, InventoryForm
+from django import forms
+from django.views.generic import TemplateView, DetailView, ListView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Category, Product, Inventory
+from django.core.exceptions import ValidationError
 
-# Home page
-def home(request):
-    return render(request, 'inventory/home.html')
+class HomePageView(TemplateView):
+    template_name = 'inventory/index.html'
 
-# ------------------------------
-# Product Management Views
-# ------------------------------
-
-def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'inventory/product_list.html', {'products': products})
-
-def add_product(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            form.save()  # Save new product
-            return redirect('product_list')
-    else:
-        form = ProductForm()
-    return render(request, 'inventory/add_product.html', {'form': form})
-
-def edit_product(request, id):
-    product = get_object_or_404(Product, id=id)
-    if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
-        if form.is_valid():
-            form.save()
-            return redirect('product_list')
-    else:
-        form = ProductForm(instance=product)
-    return render(request, 'inventory/edit_product.html', {'form': form})
-
-def delete_product(request, id):
-    product = get_object_or_404(Product, id=id)
-    if request.method == 'POST':
-        product.delete()
-        return redirect('product_list')
-    return render(request, 'inventory/delete_product.html', {'product': product})
-
-def inventory_list(request):
-    products = Product.objects.all()
-    low_stock = products.annotate(
-        is_low_stock=ExpressionWrapper(F('quantity') < 5, output_field=BooleanField())
-    )
-    return render(request, 'inventory/inventory_list.html', {'products': products, 'low_stock': low_stock})
-
-def update_inventory(request, id):
-    product = get_object_or_404(Product, id=id)
-    if request.method == 'POST':
-        form = InventoryForm(request.POST, instance=product)
-        if form.is_valid():
-            form.save()
-            return redirect('inventory_list')
-    else:
-        form = InventoryForm(instance=product)
-    return render(request, 'inventory/update_inventory.html', {'form': form})
-
-# ------------------------------
-# Sales Views (Decrease Inventory)
-# ------------------------------
-
-def sale_list(request):
-    sales = Sale.objects.all()
-    return render(request, 'inventory/sale_list.html', {'sales': sales})
-
-def view_sale(request, sale_id):
-    sale = get_object_or_404(Sale, id=sale_id)
-    sale_items = sale.saleitem_set.select_related('product')
-    for item in sale_items:
-        item.subtotal = item.product.price * item.quantity
-    return render(request, 'inventory/view_sale.html', {'sale': sale, 'sale_items': sale_items})
-
-def add_sale(request):
-    if request.method == 'POST':
-        form = SaleForm(request.POST)
-        if form.is_valid():
-            # Save the Sale instance to generate a primary key
-            sale = form.save()
-
-            # Retrieve the cart from the session
-            cart = request.session.get('cart', {})
-            if not cart:
-                return redirect('sale_list')
-
-            # Create SaleItem instances for each item in the cart
-            for id, quantity in cart.items():
-                try:
-                    product = Product.objects.get(id=id)
-                except Product.DoesNotExist:
-                # Handle the case where the product doesn't exist
-                    continue
-                product = Product.objects.get(id=id)
-                SaleItem.objects.create(sale=sale, product=product, quantity=quantity)
-                product.adjust_inventory(-quantity)  # Decrease inventory
-
-            # Clear the cart from the session
-            request.session['cart'] = {}
-
-            return redirect('sale_list')
-    else:
-        form = SaleForm()
-    return render(request, 'inventory/add_sale.html', {'form': form})
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'inventory/category_list.html'
+    context_object_name = 'categories'
 
 
-def process_sale(request):
-    if request.method == 'POST':
-        form = SaleForm(request.POST)
-        if form.is_valid():
-            # Save the Sale instance
-            sale = form.save()
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
 
-            # Retrieve product and quantity from the form
-            product = form.cleaned_data['product']
-            quantity = form.cleaned_data['quantity']
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if Category.objects.filter(name=name).exists():
+            raise ValidationError('A category with this name already exists.')
+        return name
 
-            # Create and save the SaleItem instance
-            SaleItem.objects.create(sale=sale, product=product, quantity=quantity)
+class CategoryCreateView(CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'inventory/category_create.html'
+    success_url = reverse_lazy('inventory:category_list')
 
-            # Adjust the product's inventory
-            product.quantity -= quantity
-            product.save()
+class CategoryUpdateView(UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'inventory/category_form.html'
+    success_url = reverse_lazy('inventory:category_list')
 
-            return redirect('sale_success')
-    else:
-        form = SaleForm()
-    return render(request, 'sales/sale_form.html', {'form': form})
-# ------------------------------
-# Purchase Views (Increase Inventory)
-# ------------------------------
+class CategoryDeleteView(DeleteView):
+    model = Category
+    template_name = 'inventory/category_confirm_delete.html'
+    success_url = reverse_lazy('inventory:category_list')
+    
 
-def purchase_list(request):
-    purchases = Purchase.objects.all()
-    return render(request, 'inventory/purchase_list.html', {'purchases': purchases})
+class ProductListView(ListView):
+    model = Product
+    template_name = 'inventory/product_list.html'
+    context_object_name = 'products'
 
-def view_purchase(request, purchase_id):
-    purchase = get_object_or_404(Purchase, id=purchase_id)
-    purchase_items = purchase.purchaseitem_set.all()
-    for item in purchase_items:
-        item.subtotal = item.product.price * item.quantity
-    return render(request, 'inventory/view_purchase.html', {'purchase': purchase, 'purchase_items': purchase_items})
+class ProductCreateView(CreateView):
+    model = Product
+    template_name = 'inventory/product_create.html'
+    fields = ['name', 'price', 'category']
+    success_url = reverse_lazy('inventory:product_list')
 
-def add_purchase(request):
-    if request.method == 'POST':
-        form = PurchaseForm(request.POST)
-        if form.is_valid():
-            purchase = form.save()
-            cart = request.session.get('cart', {})
-            for id, quantity in cart.items():
-                product = Product.objects.get(id=id)
-                PurchaseItem.objects.create(purchase=purchase, product=product, quantity=quantity)
-                product.adjust_inventory(quantity)  # Increase inventory
-            request.session['cart'] = {}
-            return redirect('purchase_list')
-    else:
-        form = PurchaseForm()
-    return render(request, 'inventory/add_purchase.html', {'form': form})
+class ProductUpdateView(UpdateView):
+    model = Product
+    template_name = 'inventory/product_update.html'
+    fields = ['name', 'price', 'category']
+    success_url = reverse_lazy('inventory:product_list')
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'inventory/product_confirm_delete.html'
+    success_url = reverse_lazy('inventory:product_list')
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'inventory/product_detail.html'
+    context_object_name = 'product'
+
+
+class InventoryListView(ListView):
+    model = Inventory
+    template_name = 'inventory/inventory_list.html'
+    context_object_name = 'inventory_items'
+
+class InventoryCreateView(CreateView):
+    model = Inventory
+    template_name = 'inventory/inventory_create.html'
+    fields = ['product', 'quantity', 'low_stock_threshold']
+    success_url = reverse_lazy('inventory:inventory_list')
+
+class InventoryUpdateView(UpdateView):
+    model = Inventory
+    template_name = 'inventory/inventory_update.html'
+    fields = ['product', 'quantity', 'low_stock_threshold']
+    success_url = reverse_lazy('inventory:inventory_list')
+
+class InventoryDeleteView(DeleteView):
+    model = Inventory
+    template_name = 'inventory/inventory_confirm_delete.html'
+    success_url = reverse_lazy('inventory:inventory_list')
