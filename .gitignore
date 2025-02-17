@@ -172,3 +172,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+inventory/templates/inventory/SDEV_220_Final_Project_Group1.code-workspace
