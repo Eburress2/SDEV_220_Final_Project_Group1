@@ -1,11 +1,20 @@
+from django.db.models import F
 from django import forms
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Category, Product, Inventory
 from django.core.exceptions import ValidationError
 
+from inventory import models
+
 class HomePageView(TemplateView):
     template_name = 'inventory/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['latest_product_list'] = Product.objects.order_by('-id')[:5]
+        context['low_stock_product_list'] = Inventory.objects.filter(quantity__lt=F('low_stock_threshold'))
+        return context
 
 class CategoryListView(ListView):
     model = Category
@@ -47,16 +56,44 @@ class ProductListView(ListView):
     template_name = 'inventory/product_list.html'
     context_object_name = 'products'
 
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['category', 'name', 'price']
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if Product.objects.filter(name=name).exists():
+            raise ValidationError('A product with this name already exists.')
+        return name
+
+
+class ProductInventoryForm(forms.ModelForm):
+    quantity = forms.IntegerField(initial=0, required=False)
+
+    class Meta:
+        model = Product
+        fields = ['category', 'name', 'price', 'quantity']
+
+    def save(self, commit=True):
+        product = super().save(commit=False)
+        if commit:
+            product.save()
+            Inventory.objects.create(product=product, quantity=self.cleaned_data['quantity'])
+        return product
+    
+
 class ProductCreateView(CreateView):
     model = Product
+    form_class = ProductInventoryForm
     template_name = 'inventory/product_create.html'
-    fields = ['name', 'price', 'category']
     success_url = reverse_lazy('inventory:product_list')
 
 class ProductUpdateView(UpdateView):
     model = Product
+    form_class = ProductInventoryForm
     template_name = 'inventory/product_update.html'
-    fields = ['name', 'price', 'category']
     success_url = reverse_lazy('inventory:product_list')
 
 class ProductDeleteView(DeleteView):
@@ -92,3 +129,5 @@ class InventoryDeleteView(DeleteView):
     model = Inventory
     template_name = 'inventory/inventory_confirm_delete.html'
     success_url = reverse_lazy('inventory:inventory_list')
+
+

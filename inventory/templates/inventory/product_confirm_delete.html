@@ -2,12 +2,12 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="display-4">Delete Product</h1>
-    <p>Are you sure you want to delete "{{ object.name }}"?</p>
+    <h1 class="display-4">Delete Inventory Item</h1>
+    <p>Are you sure you want to delete "{{ object.product.name }}"?</p>
     <form method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Confirm Delete</button>
-        <a href="{% url 'inventory:product_list' %}" class="btn btn-secondary">Cancel</a>
+        <a href="{% url 'inventory:inventory_list' %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 {% endblock %}
