@@ -1,0 +1,33 @@
+{% extends "inventory/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="display-4">Inventory List</h1>
+    <a href="{% url 'inventory:inventory_create' %}" class="btn btn-primary mb-3">Update Quantities and Low-Stock Threshold.</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Low Stock Threshold</th>
+                <th>Low Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in inventory_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.low_stock_threshold }}</td>
+                <td>{{ item.is_low_stock|yesno:"Yes,No" }}</td>
+                <td>
+                    <a href="{% url 'inventory:inventory_update' item.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'inventory:inventory_delete' item.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

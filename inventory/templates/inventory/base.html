@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    
+    <nav class="navbar navbar-dark">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="{% url 'inventory:home' %}" class="btn btn-light me-2">Home</a> <!-- Update this line -->
+                
+            </div>
+            <div><h4 class="text-center display-6">SDEV 220</h2></div>
+            <div>
+                <button class="btn btn-light me-2" data-bs-theme-value="light">Light</button>
+                <button class="btn btn-dark me-2" data-bs-theme-value="dark">Dark</button>
+            </div>
+        </div>
+        <div class="container">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                    Manage Inventory
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item" href="{% url 'inventory:category_list' %}">Categories</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'inventory:product_list' %}">Products</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'inventory:inventory_list' %}">Stock Levels</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+
+        <div class="container mt-4 mb-100">
+            {% block content %}{% endblock %}
+        </div>
+
+    {% comment %} <footer class="py-3 my-4" style="bottom:0; position: absolute"> {% endcomment %}
+    <div class="container my-5">
+        <footer class="footer text-center fixed mb-5 border-top mt-2 pt-3">
+            <ul class="nav justify-content-center border-bottom  pb-1 mb-2">
+                <li class="nav-item"><a href="{% url 'inventory:home' %}" class="nav-link px-2 text-body-secondary">Home</a></li>
+                <li class="nav-item"><a href="{% url 'inventory:category_list' %}" class="nav-link px-2 text-body-secondary">Categories</a></li>
+                <li class="nav-item"><a href="{% url 'inventory:product_list' %}" class="nav-link px-2 text-body-secondary">Products</a></li>
+                <li class="nav-item"><a href="{% url 'inventory:inventory_list' %}" class="nav-link px-2 text-body-secondary">Inventory</a></li>
+            </ul>
+        <p class="small text-center text-muted">Ivy Tech SDEV 220 | 
+            &copy; 2025 All rights reserved.<br> Built with 
+            <a href="https://www.djangoproject.com/">Django</a> | 
+            <a href="https://getbootstrap.com/">Bootstrap</a> | 
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">Javascript</a> | 
+        </p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="{% static 'inventory/js/theme_toggler.js' %}"></script>
+</body>
+</html>

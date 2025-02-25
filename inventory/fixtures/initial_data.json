@@ -1,0 +1,404 @@
+[
+    {
+        "model": "inventory.category",
+        "pk": 1,
+        "fields": {
+            "name": "Electronics"
+        }
+    },
+    {
+        "model": "inventory.category",
+        "pk": 2,
+        "fields": {
+            "name": "Books"
+        }
+    },
+    {
+        "model": "inventory.category",
+        "pk": 3,
+        "fields": {
+            "name": "Clothing"
+        }
+    },
+    {
+        "model": "inventory.category",
+        "pk": 4,
+        "fields": {
+            "name": "Home Appliances"
+        }
+    },
+    {
+        "model": "inventory.category",
+        "pk": 5,
+        "fields": {
+            "name": "Toys"
+        }
+    },
+    {
+        "model": "inventory.category",
+        "pk": 6,
+        "fields": {
+            "name": "Sports"
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 1,
+        "fields": {
+            "name": "Laptop",
+            "price": "999.99",
+            "category": 1
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 2,
+        "fields": {
+            "name": "Smartphone",
+            "price": "499.99",
+            "category": 1
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 3,
+        "fields": {
+            "name": "Tablet",
+            "price": "299.99",
+            "category": 1
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 4,
+        "fields": {
+            "name": "Headphones",
+            "price": "199.99",
+            "category": 1
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 5,
+        "fields": {
+            "name": "E-Reader",
+            "price": "129.99",
+            "category": 2
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 6,
+        "fields": {
+            "name": "Novel",
+            "price": "19.99",
+            "category": 2
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 7,
+        "fields": {
+            "name": "Textbook",
+            "price": "89.99",
+            "category": 2
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 8,
+        "fields": {
+            "name": "T-Shirt",
+            "price": "14.99",
+            "category": 3
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 9,
+        "fields": {
+            "name": "Jeans",
+            "price": "49.99",
+            "category": 3
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 10,
+        "fields": {
+            "name": "Jacket",
+            "price": "99.99",
+            "category": 3
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 11,
+        "fields": {
+            "name": "Blender",
+            "price": "39.99",
+            "category": 4
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 12,
+        "fields": {
+            "name": "Microwave",
+            "price": "79.99",
+            "category": 4
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 13,
+        "fields": {
+            "name": "Toaster",
+            "price": "24.99",
+            "category": 4
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 14,
+        "fields": {
+            "name": "Action Figure",
+            "price": "14.99",
+            "category": 5
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 15,
+        "fields": {
+            "name": "Board Game",
+            "price": "29.99",
+            "category": 5
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 16,
+        "fields": {
+            "name": "Doll",
+            "price": "19.99",
+            "category": 5
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 17,
+        "fields": {
+            "name": "Soccer Ball",
+            "price": "24.99",
+            "category": 6
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 18,
+        "fields": {
+            "name": "Basketball",
+            "price": "29.99",
+            "category": 6
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 19,
+        "fields": {
+            "name": "Tennis Racket",
+            "price": "49.99",
+            "category": 6
+        }
+    },
+    {
+        "model": "inventory.product",
+        "pk": 20,
+        "fields": {
+            "name": "Baseball Glove",
+            "price": "39.99",
+            "category": 6
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 1,
+        "fields": {
+            "product": 1,
+            "quantity": 50,
+            "low_stock_threshold": 10
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 2,
+        "fields": {
+            "product": 2,
+            "quantity": 30,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 3,
+        "fields": {
+            "product": 3,
+            "quantity": 20,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 4,
+        "fields": {
+            "product": 4,
+            "quantity": 40,
+            "low_stock_threshold": 10
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 5,
+        "fields": {
+            "product": 5,
+            "quantity": 15,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 6,
+        "fields": {
+            "product": 6,
+            "quantity": 100,
+            "low_stock_threshold": 20
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 7,
+        "fields": {
+            "product": 7,
+            "quantity": 10,
+            "low_stock_threshold": 2
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 8,
+        "fields": {
+            "product": 8,
+            "quantity": 60,
+            "low_stock_threshold": 10
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 9,
+        "fields": {
+            "product": 9,
+            "quantity": 25,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 10,
+        "fields": {
+            "product": 10,
+            "quantity": 15,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 11,
+        "fields": {
+            "product": 11,
+            "quantity": 35,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 12,
+        "fields": {
+            "product": 12,
+            "quantity": 20,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 13,
+        "fields": {
+            "product": 13,
+            "quantity": 50,
+            "low_stock_threshold": 10
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 14,
+        "fields": {
+            "product": 14,
+            "quantity": 80,
+            "low_stock_threshold": 15
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 15,
+        "fields": {
+            "product": 15,
+            "quantity": 25,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 16,
+        "fields": {
+            "product": 16,
+            "quantity": 30,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 17,
+        "fields": {
+            "product": 17,
+            "quantity": 45,
+            "low_stock_threshold": 10
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 18,
+        "fields": {
+            "product": 18,
+            "quantity": 20,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 19,
+        "fields": {
+            "product": 19,
+            "quantity": 15,
+            "low_stock_threshold": 5
+        }
+    },
+    {
+        "model": "inventory.inventory",
+        "pk": 20,
+        "fields": {
+            "product": 20,
+            "quantity": 25,
+            "low_stock_threshold": 5
+        }
+    }
+]

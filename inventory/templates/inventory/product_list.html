@@ -1,0 +1,31 @@
+{% extends "inventory/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="display-4">Product List</h1>
+    <a href="{% url 'inventory:product_create' %}" class="btn btn-primary mb-3">Add New Product</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.category.name }}</td>
+                <td>
+                    <a href="{% url 'inventory:product_update' product.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'inventory:product_delete' product.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

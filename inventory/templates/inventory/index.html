@@ -1,0 +1,102 @@
+{% extends "inventory/base.html" %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h4 class="display-4 border-bottom">Group 1 Project <br> Inventory Management</h1>
+    <h4 class="lead">Add, remove, and update categories, products, and quantities.</h4>
+</div> 
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Categories</h5>
+                    <p class="card-text">Browse the various categories.</p>
+                    <a href="{% url 'inventory:category_list' %}" class="btn btn-warning">Categories</a> <!-- Update this URL when you implement sales view -->
+                </div>
+            </div>
+        </div> 
+        
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Products</h5>
+                    <p class="card-text">Manage available products here.</p>
+                    <a href="{% url 'inventory:product_list' %}" class="btn btn-info">Products</a> <!-- Update this URL when you implement purchases view -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Inventory</h5>
+                    <p class="card-text">Manage product quantities here.</p>
+                    <a href="{% url 'inventory:inventory_list' %}" class="btn btn-primary">Inventory</a>
+                </div>
+            </div>
+        </div>
+             
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Latest Products</h5>
+                    <p class="card-text">Recently added products.</p>
+                    {% if latest_product_list %}
+                        <ul>
+                        {% for product in latest_product_list %}
+                            <li><a href="{% url 'inventory:product_detail' product.id %}">{{ product.name }}</a></li> <!-- Update this URL when you implement product detail view -->
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No products are available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Low Stock Products</h5>
+                    <p class="card-text">Products that are low in stock.</p>
+                    {% if low_stock_product_list %}
+                        <ul>
+                        {% for item in low_stock_product_list %}
+                            <li><a href="{% url 'inventory:product_detail' item.product.id %}">{{ item.product.name }}</a> - {{ item.quantity }} left</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No products are low in stock.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+        {% comment %} Potential add-ons if we want to show purchases and sales
+
+         <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Sales</h5>
+                    <p class="card-text">Record sales transactions to reduce stock.</p>
+                    <a href="#" class="btn btn-warning">Sales</a> <!-- Update this URL when you implement sales view -->
+                </div>
+            </div>
+        </div> 
+        {% endcomment %}
+        
+        {% comment %} <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Purchases</h5>
+                    <p class="card-text">Record purchase transactions to add stock.</p>
+                    <a href="#" class="btn btn-info">Purchases</a> 
+                </div>
+            </div>
+        </div>
+    </div> 
+    
+    {% endcomment %}
