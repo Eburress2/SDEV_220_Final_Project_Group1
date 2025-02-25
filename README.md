@@ -101,7 +101,7 @@ inventory-management-system/
 │   ├── admin.py           # Admin site configuration
 │   ├── apps.py            # App configuration
 │   ├── models.py          # Data models
-│   ├── tests.py           # Unit tests
+│   ├── tests.py           # Tests
 │   ├── urls.py            # URL routing
 │   ├── views.py           # View functions and classes
 │   └── forms.py           # Forms for data input
