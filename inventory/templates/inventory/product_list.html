@@ -20,6 +20,7 @@
                 <td>{{ product.price }}</td>
                 <td>{{ product.category.name }}</td>
                 <td>
+                    <a href="{% url 'inventory:product_detail' product.pk %}" class="btn btn-primary btn-sm">View</a>
                     <a href="{% url 'inventory:product_update' product.pk %}" class="btn btn-warning btn-sm">Edit</a>
                     <a href="{% url 'inventory:product_delete' product.pk %}" class="btn btn-danger btn-sm">Delete</a>
                 </td>

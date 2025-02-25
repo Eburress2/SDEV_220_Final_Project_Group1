@@ -1,3 +1,13 @@
+"""
+Models for the inventory app.
+
+This file contains the data models for the inventory app, 
+defining the structure of the database tables.
+Each model represents a table in the database and includes 
+fields and methods for interacting with the data.
+"""
+
+
 from django.db import models
 from django.forms import ValidationError
 
