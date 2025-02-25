@@ -1,3 +1,11 @@
+"""
+URL configuration for the inventory app.
+
+This file contains the URL patterns for the inventory app, mapping URLs to their corresponding views.
+Each URL pattern is associated with a specific view that handles the request and returns a response.
+"""
+
+
 from django.urls import path
 from .views import (
     CategoryListView,
@@ -19,7 +27,7 @@ from .views import (
 app_name = "inventory"
 urlpatterns = [
     # Home page
-    path('', HomePageView.as_view(), name='home'),  # Add this line
+    path('', HomePageView.as_view(), name='home'),
 
     # Categories
     path('category/', CategoryListView.as_view(), name='category_list'),
@@ -27,7 +35,7 @@ urlpatterns = [
     path('category/<int:pk>/edit/', CategoryUpdateView.as_view(), name='category_update'),
     path('category/<int:pk>/delete/', CategoryDeleteView.as_view(), name='category_delete'),
 
-        # Products
+    # Products
     path('product/', ProductListView.as_view(), name='product_list'),
     path('product/new/', ProductCreateView.as_view(), name='product_create'),
     path('product/<int:pk>/edit/', ProductUpdateView.as_view(), name='product_update'),
